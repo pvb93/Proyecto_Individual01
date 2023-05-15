@@ -294,14 +294,14 @@ def recomendacion(titulo, movies, cosine_sim, indices,rating):
     #Similiraty score of given movie with other movies
     sim_scores = list(enumerate(cosine_sim[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:12]
+    sim_scores = sim_scores[1:15]
     movie_indices = [i[0] for i in sim_scores]
     
     #Filter movies by ratings and vote counts
     movie_rmd = movies.iloc[movie_indices][['title', 'vote_count', 'vote_average', 'release_year']]
     movie_rmd['years'] = abs(movie_rmd['release_year'] - movies.loc[idx,'release_year'])
     C_rm = movies['vote_average'].mean()
-    m_rm = movies['vote_count'].quantile(0.60)
+    m_rm = movies['vote_count'].quantile(0.50)
     qualified = movie_rmd[(movie_rmd['vote_count'] >= m_rm) & (movie_rmd['vote_count'].notnull()) & (movie_rmd['vote_average'].notnull()) & (movie_rmd['years'] <= 8)]
     if rating == 'Yes':
         qualified['wr'] = qualified.apply(weighted_rating, m = m_rm, C = C_rm,axis=1)
