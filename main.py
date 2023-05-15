@@ -140,7 +140,7 @@ collect = st.selectbox('Seleccione franquicia', unique_collections)
 
 end03 = franquicia(collect)
 
-st.write(end03['franquicia'], 'tiene',end03['cantidad'],'películas, con una gancia total de',end03['ganancia_total'],'y una gancia promedio de',end03['ganancia_promedio'])
+st.write(end03['franquicia'], 'tiene',end03['cantidad'],'películas, con una gancia total de',end03['ganancia_total'],'USD y una gancia promedio de',end03['ganancia_promedio'],'USD')
 
 st.markdown('***')
 st.markdown('## Cantidad de peliculas producidas en el país seleccionado')
@@ -213,7 +213,7 @@ productora_elegido = st.selectbox('Seleccione productora', select_company)
 
 end05 = productoras(productora_elegido)
 
-st.write(end05['productora'], 'ha producido',end05['cantidad'],'películas, con una ganancia total de',end05['ganancia_total'])
+st.write(end05['productora'], 'ha producido',end05['cantidad'],'películas, con una ganancia total de',end05['ganancia_total'],'USD')
 
 st.markdown('***')
 st.markdown('##  Inversión, ganancia, retorno y año de lanzamiento de la película seleccionada')
@@ -246,7 +246,7 @@ if type(end06['inversion']) != list:
     st.write('La película se estrenó en el año',end06['anio'])
 else:
     for i in range(len(end06['inversion'])):
-        st.write('En',end06['pelicula'], 'se invirtió',end06['inversion'][i],'se tuvo una ganancia de',end06['ganancia'][i],'y un retorno de',end06['retorno'][i])
+        st.write('En',end06['pelicula'], 'se invirtió',end06['inversion'][i],'USD se tuvo una ganancia de',end06['ganancia'][i],'USD y un retorno de',end06['retorno'][i],'USD')
         st.write('La película se estrenó en el año',end06['anio'][i])
 
 st.markdown('***')
@@ -257,7 +257,7 @@ st.markdown('##  Recomendación de películas basada en película seleccionada y
 #Divide the data in 3 due to computational issues
 
 #movies90 = df_ml[(df_ml['release_year'] < 1990)].reset_index()# Movies before 1990
-movies91 = df_ml[(df_ml['release_year'] > 1998) & (df_ml['release_year'] < 2000)].reset_index()# Movies between 1990 and 2010
+movies91 = df_ml[(df_ml['release_year'] => 1998) & (df_ml['release_year'] <= 2000)].reset_index()# Movies between 1990 and 2010
 #movies20 = df_ml[(df_ml['release_year'] > 2000)].reset_index() # Movies after 2000
 
 #Calculate cosine similarity
@@ -330,7 +330,7 @@ cosine_sim91, indices91 = vector_df(movies91)
 
 #Movie selection & recomendation, between 1990 and 2010
 
-titulo_elegido91 = st.selectbox('Películas estrenadas entre 1990 y 2010', lista_movies91)
+titulo_elegido91 = st.selectbox('Películas estrenadas entre 1998 y 2000', lista_movies91)
 
 ml_91 = recomendacion(titulo_elegido91, movies91, cosine_sim91, indices91)
 
