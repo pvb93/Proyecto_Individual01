@@ -257,7 +257,7 @@ st.markdown('##  Recomendación de películas basada en película seleccionada y
 #Divide the data in 3 due to computational issues
 
 #movies90 = df_ml[(df_ml['release_year'] < 1990)].reset_index()# Movies before 1990
-movies91 = df_ml[(df_ml['release_year'] > 1990) & (df_ml['release_year'] < 2010)].reset_index()# Movies between 1990 and 2010
+movies91 = df_ml[(df_ml['release_year'] > 1990) & (df_ml['release_year'] < 2000)].reset_index()# Movies between 1990 and 2010
 #movies20 = df_ml[(df_ml['release_year'] > 2000)].reset_index() # Movies after 2000
 
 #Calculate cosine similarity
