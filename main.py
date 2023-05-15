@@ -250,15 +250,14 @@ else:
         st.write('La película se estrenó en el año',end06['anio'][i])
 
 st.markdown('***')
-st.markdown('##  Recomendación de películas basada en película seleccionada y dividida por períodos')
+st.markdown('##  Recomendación de películas basada en película seleccionada')
 
 # ML endpoint
 
-#Divide the data in 3 due to computational issues
+#Divide the data due to computational issues
 
-#movies90 = df_ml[(df_ml['release_year'] < 1990)].reset_index()# Movies before 1990
-movies91 = df_ml[(df_ml['release_year'] >= 1998) & (df_ml['release_year'] <= 2000)].reset_index()# Movies between 1990 and 2010
-#movies20 = df_ml[(df_ml['release_year'] > 2000)].reset_index() # Movies after 2000
+movies98 = df_ml[(df_ml['release_year'] >= 1998) & (df_ml['release_year'] <= 2000)].reset_index()# Movies between 1998 and 2000
+
 
 #Calculate cosine similarity
 def vector_df(movies):
@@ -284,7 +283,7 @@ def weighted_rating(x, m, C):
     return (v/(v+m) * R) + (m/(m+v) * C)
 
 #Recomendation system
-def recomendacion(titulo, movies, cosine_sim, indices):
+def recomendacion(titulo, movies, cosine_sim, indices,rating):
     #Find movies's index
     idx = indices[titulo]
     #Verify if idx is an int, with repeating titles, recommend based on the last movie
@@ -304,46 +303,25 @@ def recomendacion(titulo, movies, cosine_sim, indices):
     C_rm = movies['vote_average'].mean()
     m_rm = movies['vote_count'].quantile(0.60)
     qualified = movie_rmd[(movie_rmd['vote_count'] >= m_rm) & (movie_rmd['vote_count'].notnull()) & (movie_rmd['vote_average'].notnull()) & (movie_rmd['years'] <= 8)]
-    qualified['wr'] = qualified.apply(weighted_rating, m = m_rm, C = C_rm,axis=1)
-    qualified = qualified.sort_values(by = ['wr','years'],ascending=[False,True]).head(5)
-    return {'lista recomendada': list(qualified['title'])}
+    if rating == 'Yes':
+        qualified['wr'] = qualified.apply(weighted_rating, m = m_rm, C = C_rm,axis=1)
+        qualified = qualified.sort_values(by = ['wr','years'],ascending=[False,True]).head(5)
+    return {'lista recomendada': list(qualified['title'].head(5))}
 
 #Get list of titles for each subdataset
-#lista_movies90 = movies90['title'].dropna().sort_values().unique().tolist()
-lista_movies91 = movies91['title'].dropna().sort_values().unique().tolist()
-#lista_movies20 = movies20['title'].dropna().sort_values().unique().tolist()
+lista_movies98 = movies98['title'].dropna().sort_values().unique().tolist()
 
 #Apply vectorize and cosine similarity to each dataset
-#cosine_sim90, indices90 = vector_df(movies91)
-cosine_sim91, indices91 = vector_df(movies91)
-#cosine_sim20, indices20 = vector_df(movies20)
+cosine_sim98, indices98 = vector_df(movies98)
 
-#Movie selection & recomendation, movies before 1990
+#Movie selection & recomendation, between 1998 and 2000
 
-#titulo_elegido90 = st.selectbox('Películas estrenadas antes de 1990', lista_movies90)
+titulo_elegido91 = st.selectbox('Películas estrenadas entre 1998 y 2000', lista_movies98)
 
-#ml_90 = recomendacion(titulo_elegido90, movies90, cosine_sim90, indices90)
+ratg = st.radio('¿Desea una recomendación basada en la puntuación?',('Yes','No'))
 
-#st.write("Se recomiendan las siguientes películas")
-#for item in ml_90['lista recomendada']:
-#    st.write("- " + item)
-
-#Movie selection & recomendation, between 1990 and 2010
-
-titulo_elegido91 = st.selectbox('Películas estrenadas entre 1998 y 2000', lista_movies91)
-
-ml_91 = recomendacion(titulo_elegido91, movies91, cosine_sim91, indices91)
+ml_98 = recomendacion(titulo_elegido91, movies98, cosine_sim98, indices98,ratg)
 
 st.write("Se recomiendan las siguientes películas")
-for item in ml_91['lista recomendada']:
+for item in ml_98['lista recomendada']:
     st.write("- " + item)
-
-#Movie selection & recomendation, after 2000
-
-#titulo_elegido20 = st.selectbox('Películas estrenadas después del 2000', lista_movies20)
-
-#ml_20 = recomendacion(titulo_elegido20, movies20, cosine_sim20, indices20)
-
-#st.write("Se recomiendan las siguientes películas")
-#for item in ml_20['lista recomendada']:
-#    st.write("- " + item)
