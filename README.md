@@ -77,16 +77,18 @@ Exploratory data analysis (EDA) is a crucial step preceding machine learning. It
 
 The subsequent step involves preprocessing the data before feeding it to the recommendation system. Based on the insights obtained from EDA, a series of transformations are applied to the data. This includes eliminating irrelevant columns, discretizing values, and transforming text into a list of words.
 Finally, the transformed data is fed into the recommendation system, which recommends movies to users based on similarities with other movies. The system achieves this by finding the similarity score between a given movie and the rest of the movies, sorting them based on the similarity score, and returning a list of five titles. The list includes films with the highest scores, sorted in descending order.
+Note that the list undergoes two main filters. Firstly, any movie with a rating equal to zero or a vote count below the 0.6 quantile is removed from the list. Secondly, there is an optional filter that allows reordering of the list based on weighted ratings. This filter takes into consideration the top 11 highest-ranking similarity movies and rearranges them from highest to lowest based on their weighted ratings.
 
 **`Deployment`** 😎
 
 Get the requirements.txt file. Create this repository and upload it to Streamlit Cloud to deploy.
+Please take note that the deployed recommendation system is restricted to movies released between 1998 and 2000, primarily due to computational limitations.
 
 <p align="center">
 <img src="src/flowchart.jpg"  height=200>
 </p>
 
-#### *Project flow chart*
+#### *Fig.1: Project flow chart*
 
 <br/>
 
