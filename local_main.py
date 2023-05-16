@@ -258,7 +258,7 @@ st.markdown('##  Recomendación de películas basada en película seleccionada')
 
 #movies90 = df_ml[(df_ml['release_year'] < 1990)].reset_index()# Movies before 1990
 movies91 = df_ml[(df_ml['release_year'] >= 1990) & (df_ml['release_year'] < 2010)].reset_index()# Movies between 1990 and 2010
-movies20 = df_ml[(df_ml['release_year'] > 2000)].reset_index() # Movies after 2000
+#movies20 = df_ml[(df_ml['release_year'] > 2000)].reset_index() # Movies after 2000
 
 
 #Calculate cosine similarity
@@ -313,12 +313,12 @@ def recomendacion(titulo, movies, cosine_sim, indices,rating):
 #Get list of titles for each subdataset
 #lista_movies90 = movies90['title'].dropna().sort_values().unique().tolist()
 lista_movies91 = movies91['title'].dropna().sort_values().unique().tolist()
-lista_movies20 = movies20['title'].dropna().sort_values().unique().tolist()
+#lista_movies20 = movies20['title'].dropna().sort_values().unique().tolist()
 
 #Apply vectorize and cosine similarity to each dataset
 #cosine_sim90, indices90 = vector_df(movies91)
 cosine_sim91, indices91 = vector_df(movies91)
-cosine_sim20, indices20 = vector_df(movies20)
+#cosine_sim20, indices20 = vector_df(movies20)
 
 #Movie selection & recomendation, movies before 1990
 
@@ -346,12 +346,12 @@ for item in ml_91['lista recomendada']:
 
 #Movie selection & recomendation, after 2000
 
-titulo_elegido20 = st.selectbox('Películas estrenadas después del 2000', lista_movies20)
+#titulo_elegido20 = st.selectbox('Películas estrenadas después del 2000', lista_movies20)
 
-ratg20 = st.radio('¿Desea una recomendación basada en la puntuación?',('Yes','No'))
+#ratg20 = st.radio('¿Desea una recomendación basada en la puntuación?',('Yes','No'))
 
-ml_20 = recomendacion(titulo_elegido20, movies20, cosine_sim20, indices20,ratg20)
+#ml_20 = recomendacion(titulo_elegido20, movies20, cosine_sim20, indices20,ratg20)
 
-st.write("Se recomiendan las siguientes películas")
-for item in ml_20['lista recomendada']:
-    st.write("- " + item)
+#st.write("Se recomiendan las siguientes películas")
+#for item in ml_20['lista recomendada']:
+#    st.write("- " + item)

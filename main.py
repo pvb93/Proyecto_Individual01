@@ -250,13 +250,17 @@ else:
         st.write('La película se estrenó en el año',end06['anio'][i])
 
 st.markdown('***')
-st.markdown('##  Recomendación de películas basada en película seleccionada')
+st.markdown('##  Recomendación de películas basada en año y película seleccionada')
 
 # ML endpoint
 
 #Divide the data due to computational issues
 
-movies98 = df_ml[(df_ml['release_year'] >= 1998) & (df_ml['release_year'] <= 2000)].reset_index()# Movies between 1998 and 2000
+min_anio = st.slider('Selecione un año', 1930, 2020, value=1998)
+
+max_anio = int(min_anio) + 2
+
+movies98 = df_ml[(df_ml['release_year'] >= min_anio) & (df_ml['release_year'] <= max_anio)].reset_index()# Movies between 1998 and 2000
 
 
 #Calculate cosine similarity
@@ -316,7 +320,7 @@ cosine_sim98, indices98 = vector_df(movies98)
 
 #Movie selection & recomendation, between 1998 and 2000
 
-titulo_elegido91 = st.selectbox('Películas estrenadas entre 1998 y 2000', lista_movies98)
+titulo_elegido91 = st.selectbox('Películas estrenadas entre '+str(min_anio)+' y '+str(max_anio), lista_movies98)
 
 ratg = st.radio('¿Desea una recomendación basada en la puntuación?',('Yes','No'))
 
